@@ -19,6 +19,12 @@ export class AppController {
     return '<h1>Classe CIM C </h1>';
   }
 
+  @Get(':id')
+  getTitleById(@Param() p: any) {
+    console.log(p);
+    return { message: `L'id récupéré est ${p.id}` }; // et la catégorie est ${p.category}`}
+  }
+
   @Get('file')
   getfile(@Res() reponse: Response) {
     reponse.sendFile('index.html', { root: 'src' });
@@ -32,5 +38,15 @@ export class AppController {
   @Post('add')
   postTitle(@Body() corps: any) {
     return { body: corps };
+  }
+
+  //@Get('all/:id/by/:category')
+
+  @Get('all')
+  getTitles(@Query() qp: any) {
+    console.log(qp);
+    return {
+      message: `Le premier queryParams ${qp.page} et le second est ${qp.online}`,
+    };
   }
 }
