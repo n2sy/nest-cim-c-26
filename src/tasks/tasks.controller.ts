@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { TasksService } from './tasks.service.js';
+import { addTaskDto } from './DTO/addTask.dto.js';
 
 @Controller('tasks')
 export class TasksController {
@@ -47,7 +48,7 @@ export class TasksController {
   //   }
 
   @Post('add')
-  addNewTask(@Body() corps: any) {
+  addNewTask(@Body() corps: addTaskDto) {
     let res = this.taskSer.addNewTask(corps);
     return { res };
   }
