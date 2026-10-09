@@ -27,15 +27,50 @@ export class TasksService {
     },
   ];
 
-  getNbTasks(y1, y2) {}
+  getNbTasks(y1, y2) {
+    return this.allTasks.filter((t) => t.year >= y1 && t.year <= y2);
+  }
 
-  getAllTasks() {}
+  getAllTasks() {
+    return this.allTasks;
+  }
 
-  getTaskById(taskId) {}
+  getTaskById(taskId) {
+    return this.allTasks.filter((t) => t.id === taskId);
+  }
 
-  addNewTask(task) {}
+  addNewTask(task) {
+    let newTask = new Task(
+      crypto.randomUUID(),
+      task.title,
+      task.year,
+      task.status,
+      new Date(),
+    );
+    this.allTasks.push(newTask);
+    return { message: 'Task added successfully', task: task };
+  }
 
-  updateTask(taskId, uTask) {}
+  updateTask(taskId, uTask) {
+    let i = this.allTasks.findIndex((t) => t.id === taskId);
+    // this.allTasks[i] = {
+    //     id : taskId,
+    //     title : uTask.title,
+    //     year : uTask.year,
+    //     status : uTask.status,
+    //     createdAt : this.allTasks[i].createdAt
+    // };
+    this.allTasks[i] = {
+      id: taskId,
+      createdAt: this.allTasks[i].createdAt,
+      ...uTask,
+    };
+    return this.allTasks[i];
+  }
 
-  deleteTask(taskId) {}
+  deleteTask(taskId) {
+    let i = this.allTasks.findIndex((t) => t.id === taskId);
+    this.allTasks.splice(i, 1);
+    return this.allTasks;
+  }
 }
