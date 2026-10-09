@@ -16,6 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       password: 'root',
       database: 'cim26c',
       autoLoadEntities: true,
+
       synchronize: true,
     }),
   ],
