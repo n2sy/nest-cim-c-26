@@ -21,10 +21,12 @@ export class TasksController {
   //constructor(private taskSer: TasksService) {}
   @Inject(TasksService) taskSer;
 
-  @Get('all')
-  getAllTasks() {
+  @Get('all/all')
+  getAllTasks(@Res() reponse : Response) {
     let res = this.taskSer.getAllTasks();
-    return { tasks: res };
+    //return { tasks: res };
+    //console.log("Controleur", reponse["section"])
+    reponse.send({ tasks: res })
   }
 
   @Get('stats')
@@ -36,9 +38,8 @@ export class TasksController {
     return { tasksTrouves: res };
   }
 
-  @Get('search/:taskId')
+  @Get('all/:taskId')
   getTaskById(@Param('taskId') taskId: any) {
-    console.log(taskId);
     let res = this.taskSer.getTaskById(taskId);
     return { taskTrouve: res };
   }
