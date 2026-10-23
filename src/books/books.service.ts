@@ -19,7 +19,14 @@ export class BooksService {
 
     async getBooks() {
         try {
-            let resultat = await this.bookRepo.find()
+            let resultat = await this.bookRepo.find(
+                {
+                    relations: {
+                        author: true
+                    }
+                    //loadRelationIds: true
+                }
+            )
             return resultat
         }
         catch (e) {
