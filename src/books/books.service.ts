@@ -66,8 +66,44 @@ export class BooksService {
         }
         return await this.bookRepo.save(updatedBook)
 
+    }
+
+    async softDelete(bookId) {
+        let res = await this.bookRepo.softDelete(bookId)
+        if (!res)
+            throw new NotFoundException(`Le livre d'id ${bookId} n'existe pas `)
+        return res
+    }
+    async softRemove(bookId) {
+        let selectedEntity = await this.getBookById(bookId);
+        let res = await this.bookRepo.softRemove(selectedEntity);
+        return res;
+    }
+
+    async restoreBook(bookId) {
+        let res = await this.bookRepo.restore(bookId);
+        if (!res)
+            throw new NotFoundException(`Le livre d'id ${bookId} n'existe pas `)
+        return res
 
     }
+    async recoverBook(bookId) {
+        let selectedEntity = await this.bookRepo.find(
+            {
+                where: {
+                    id: bookId,
+                },
+                withDeleted: true
+            }
+        )
+        if (!selectedEntity)
+            throw new NotFoundException(`Le livre d'id ${bookId} n'existe pas `)
+        let res = await this.bookRepo.recover(selectedEntity)
+        return res
+
+    }
+
+
 
 
 }

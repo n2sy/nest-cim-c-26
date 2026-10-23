@@ -1,26 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TimeStamp } from './generics/timestamp.js';
+import { AuthorEntity } from './author.entity.js';
 
 @Entity('livre')
 export class BookEntity extends TimeStamp {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column({
-    length: 50,
-  })
-  title: string;
+    @Column({
+        length: 50,
+    })
+    title: string;
 
-  @Column()
-  author: string;
+    @ManyToOne((type) => AuthorEntity, (e) => e.id)
+    author;
 
-  @Column({
-    type: 'int',
-  })
-  year: number;
+    @Column({
+        type: 'int',
+    })
+    year: number;
 
-  @Column()
-  image: string;
+    @Column()
+    image: string;
 }
 
 // @Column(
