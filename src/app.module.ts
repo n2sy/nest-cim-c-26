@@ -3,6 +3,7 @@ import { AppController } from './app.controller.js';
 import { TasksModule } from './tasks/tasks.module.js';
 import { BooksModule } from './books/books.module.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
       synchronize: true,
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],
