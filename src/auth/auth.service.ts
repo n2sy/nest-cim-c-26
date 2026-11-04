@@ -4,11 +4,13 @@ import { UserEntity } from './entities/user.entity.js';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Roles } from './generics/role.enum.js';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
 
-    constructor(@InjectRepository(UserEntity) private userRepo: Repository<UserEntity>) { }
+    constructor(@InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
+        private jwtService: JwtService) { }
 
     async register(newUser: UserEntity) {
         let assignedRole;
@@ -47,7 +49,14 @@ export class AuthService {
         const verif = await bcrypt.compare(password, selectedUser.password);
         if (!verif) throw new NotFoundException("Aucun user n'existe avec ce mot de passe");
 
-        return selectedUser
+        let token = this.jwtService.sign(
+            {
+                id: selectedUser.id,
+                email: selectedUser.email,
+                role: selectedUser.role
+            }
+        )
+        return token
 
 
 

@@ -13,6 +13,6 @@ export class AuthController {
     @Post("signin")
     async authentifier(@Body() corps) {
         let res = await this.authService.login(corps)
-        return { message: "User Authentified", result: res }
+        return { message: "User Authentified", access_token: res }
     }
 }

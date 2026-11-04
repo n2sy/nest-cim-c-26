@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { BooksService } from './books.service.js';
+import { JwtAuthGuard } from '../jwt-auth-guard/jwt-auth-guard.guard.js';
+import { JwtAdminGuard } from '../jwt-admin/jwt-admin.guard.js';
 
 @Controller('books')
 export class BooksController {
 
     @Inject(BooksService) bookService: BooksService;
 
+    @UseGuards(JwtAuthGuard, JwtAdminGuard)
     @Post('add')
     async ajouterLivre(@Body() body: any) {
         let r = await this.bookService.addBook(body);
@@ -19,8 +22,10 @@ export class BooksController {
         return r
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':bookId')
-    async lireLivreParId(@Param('bookId') id) {
+    async lireLivreParId(@Param('bookId') id, @Req() request: Request) {
+        console.log(request)
         let r = await this.bookService.getBookById(id);
         return { message: "Book found", book: r }
     }
